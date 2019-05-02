@@ -1,3 +1,6 @@
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  *
  * @author exk
@@ -5,24 +8,14 @@
 public class Solution {
 
     public int solution(int N) {
-        String bin = getBinaryRepresentation(N);
-        if (bin.contains("100") == false || bin.contains("001") == false) {
-            return 0;
-        }
+        String integerBinaryRepresentation = getBinaryRepresentation(N);
+        Pattern pattern = Pattern.compile("0*");
+        Matcher matcher = pattern.matcher(integerBinaryRepresentation);
         int binaryGap = 0;
-        String sequenceOfZeros = "";
-        Integer index = 0;
-        while (index < bin.length()) {
-            if (bin.charAt(index) == '1') {
-                if (sequenceOfZeros.length() > binaryGap) {
-                    binaryGap = sequenceOfZeros.length();
-                }
-                sequenceOfZeros = "";
+        while (matcher.find()) {
+            if (integerBinaryRepresentation.contains("1" + matcher.group() + "1") && matcher.group().length() > binaryGap) {
+                binaryGap = matcher.group().length();
             }
-            if (bin.charAt(index) == '0') {
-                sequenceOfZeros = sequenceOfZeros + "0";
-            }
-            index += 1;
         }
         return binaryGap;
     }
